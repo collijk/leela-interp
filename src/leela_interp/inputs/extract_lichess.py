@@ -1,5 +1,6 @@
 
 import click
+import pandas as pd
 import zstandard as zstd
 
 from leela_interp import cli_options as clio
@@ -10,20 +11,25 @@ URL = "https://database.lichess.org/lichess_db_puzzle.csv.zst"
 
 def extract_lichess_main(data_root: str):
     li_data = LeelaData(data_root)
-    temp_path = li_data.root / "lichess_db_puzzle.csv.zst"
-    touch(temp_path, clobber=True)
-    print(f"Downloading lichess puzzles to {temp_path}")
-    wget(URL, temp_path)
+    dl_path = li_data.root / "lichess_db_puzzle.csv.zst"
+    csv_path = li_data.root / "lichess_db_puzzle.csv"
+    out_path = li_data.puzzles_path("lichess")
 
-    path = li_data.puzzles_path("lichess_full")
-    touch(path, clobber=True)
-    print(f"Decompressing lichess puzzles to {path}")
+    print(f"Downloading lichess puzzles to {dl_path}")
+    wget(URL, dl_path)
 
-    with temp_path.open("rb") as ifh, path.open("wb") as ofh:
+    print(f"Decompressing lichess puzzles to {csv_path}")
+    with dl_path.open("rb") as ifh, csv_path.open("wb") as ofh:
         dctx = zstd.ZstdDecompressor()
         dctx.copy_stream(ifh, ofh)
 
-    temp_path.unlink()
+    print(f"Converting lichess puzzles to parquet at {out_path}")
+    puzzle_df = pd.read_csv(csv_path)
+    touch(out_path, clobber=True)
+    puzzle_df.to_parquet(out_path)
+
+    dl_path.unlink()
+    csv_path.unlink()
 
 
 @click.command()

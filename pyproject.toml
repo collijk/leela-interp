@@ -36,6 +36,7 @@ svgelements = "*"
 click = "*"
 jupyter = "*"
 zstandard = "*"
+pyarrow = "^19.0.1"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "*"

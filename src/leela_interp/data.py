@@ -26,12 +26,11 @@ class LeelaData:
         return self.root / "puzzles"
 
     def puzzles_path(self, puzzle_group: str) -> Path:
-        return self.puzzles / f"{puzzle_group}.pkl"
+        return self.puzzles / f"{puzzle_group}.parquet"
 
     def load_puzzles(self, puzzle_group: str) -> pd.DataFrame:
         path = self.puzzles_path(puzzle_group)
-        with path.open("rb") as f:
-            return pickle.load(f)
+        return pd.read_parquet(path)
 
     @property
     def models(self) -> Path:
