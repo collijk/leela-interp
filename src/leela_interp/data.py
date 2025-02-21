@@ -1,6 +1,7 @@
 import pickle
 from pathlib import Path
 
+import pandas as pd
 from leela_interp.shell_tools import mkdir
 from leela_interp import constants as lic
 
@@ -27,7 +28,7 @@ class LeelaData:
     def puzzles_path(self, puzzle_group: str) -> Path:
         return self.puzzles / f"{puzzle_group}.pkl"
 
-    def load_puzzles(self, puzzle_group: str) -> list[str]:
+    def load_puzzles(self, puzzle_group: str) -> pd.DataFrame:
         path = self.puzzles_path(puzzle_group)
         with path.open("rb") as f:
             return pickle.load(f)

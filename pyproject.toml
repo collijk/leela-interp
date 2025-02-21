@@ -34,6 +34,7 @@ nbformat = "*"
 iceberg-dsl = { git = "git+https://github.com/revalo/iceberg.git" }
 svgelements = "*"
 click = "*"
+jupyter = "*"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "*"
