@@ -8,7 +8,7 @@ import pandas as pd
 import torch
 import tqdm
 from leela_interp import ActivationCache, Lc0Model, LeelaBoard
-from leela_interp.tools import probing
+from leela_interp.legacy.tools import probing
 
 
 def train_probe(

@@ -7,7 +7,7 @@ import torch
 import tqdm
 from einops import rearrange
 from leela_interp import Lc0sight, LeelaBoard
-from leela_interp.tools import patching
+from leela_interp.legacy.tools import patching
 
 
 def squarewise_patching(model, puzzles, args):

@@ -6,7 +6,7 @@ from pathlib import Path
 import torch
 from einops import rearrange
 from leela_interp import Lc0sight
-from leela_interp.tools import patching
+from leela_interp.legacy.tools import patching
 
 
 def main(args):

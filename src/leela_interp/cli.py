@@ -1,41 +1,26 @@
 import click
 
-from leela_interp import extract
+from leela_interp import inputs
 
 
 @click.group()
 def lirun() -> None:
-    """Run a leela interp pipeline."""
+    """Run a leela interp command."""
 
 
-@click.group()
-def litask() -> None:
-    """Run an individual task in the leela interp pipeline."""
-
-
-for module in [extract]:
+for module in [inputs]:
     runners = getattr(module, "RUNNERS", {})
-    task_runners = getattr(module, "TASK_RUNNERS", {})
 
-    if not runners or not task_runners:
+    if not runners:
         continue
 
     command_name = module.__name__.split(".")[-1]
 
     @click.group(name=command_name)
-    def workflow_runner() -> None:
+    def _runner() -> None:
         pass
 
     for name, runner in runners.items():
-        workflow_runner.add_command(runner, name)
+        _runner.add_command(runner, name)
 
-    lirun.add_command(workflow_runner)
-
-    @click.group(name=command_name)
-    def task_runner() -> None:
-        pass
-
-    for name, runner in task_runners.items():
-        task_runner.add_command(runner, name)
-
-    litask.add_command(task_runner)
+    lirun.add_command(_runner)

@@ -9,7 +9,7 @@ from leela_interp import (
     LeelaBoard,
     patching,
 )
-from leela_interp.tools.piece_movement_heads import (
+from leela_interp.legacy.tools.piece_movement_heads import (
     bishop_heads,
     knight_heads,
     rook_heads,

@@ -19,3 +19,4 @@ __pycache__
 lichess_db_puzzle.csv
 
 data/
+sandbox/
