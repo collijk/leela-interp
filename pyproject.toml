@@ -1,36 +1,142 @@
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
-
-[project]
+[tool.poetry]
 name = "leela-interp"
 version = "0.0.1"
 readme = "README.md"
-
-dependencies = [
-    "chess @ git+https://github.com/ejnnr/python-chess.git",
-    "zarr",
-    "numpy",
-    "scikit-learn",
-    "einops",
-    "ipykernel",
-    "torch",
-    "tqdm",
-    "matplotlib",
-    "nnsight==0.2.*",
-    "onnx2torch",
-    "pandas",
-    "nbformat",
-    "iceberg-dsl @ git+https://github.com/revalo/iceberg.git",
-    "svgelements",
+license = "GPL-3.0"
+authors = [
+    "Erik Jenner",
+    "Shreyas Kapur",
+    "Vasil Georgiev",
+    "Cameron Allen",
+    "Scott Emmons",
+    "Stuart Russell"
 ]
 
-requires-python = ">=3.10"
+packages = [
+    { include = "leela_interp", from = "src" }
+]
 
+[tool.poetry.dependencies]
+python = ">=3.10, <3.13"
+chess = { git = "git+https://github.com/ejnnr/python-chess.git" }
+zarr = "*"
+numpy = "*"
+scikit-learn = "*"
+einops = "*"
+ipykernel = "*"
+torch = "*"
+tqdm = "*"
+matplotlib = "*"
+nnsight = "0.2.*"
+onnx2torch = "*"
+pandas = "*"
+nbformat = "*"
+iceberg-dsl = { git = "git+https://github.com/revalo/iceberg.git" }
+svgelements = "*"
 
-[tool.setuptools.packages.find]
-where = ["src"]
+[tool.poetry.group.dev.dependencies]
+mypy = "*"
+pre-commit = "*"
+pymdown-extensions = "*"
+pytest = "*"
+pytest-github-actions-annotate-failures = "*"
+pytest-cov = "*"
+python-kacl = "*"
+ruff = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+# [tool.poetry.scripts]
+# cli = "leela_interp.cli:main"
 
 [tool.ruff]
-select = ["E", "W", "F", "I"]
-ignore-init-module-imports = true
+target-version = "py310" # The lowest supported version
+
+[tool.ruff.lint]
+# By default, enable all the lint rules.
+# Add to the ignore list below if you don't want some rules.
+# If you need some ignores for certain modules, see tool.ruff.lint.per-file-ignores below.
+# For individual ignore cases, prefer inline `# noqa`s within the code.
+select = ["ALL"]
+ignore = [
+    "COM812",   # flake8 missing trailing comma, fomatter handles
+    "ISC001",   # Implicit string concatenation is not allowed
+    "ANN",      # Type hints related, let mypy handle these.
+    "D",        # Docstrings related, way too strict to our taste
+    "T201",     # Use of `print` detected, we don't have formal logging yet.
+    "RET504",   # Assign to variable before return, useful for debugging
+    "FBT001",   # Boolean type positional arg, annoying with cli flags
+    "S603",     # Supbrocess arg validation, prone to false positives
+    "FIX002",   # TODOs are okay.
+    "TD002",    # TODOs don't need an author
+    "TD003",    # TODOs don't need a linked issue
+    "PYI041",   # float | int is better explicit typing than depending on a special case
+    "RUF007",   # zip is idiomatic, this check is dumb.
+    "RET505",   # Else after return, too many false positives.
+    "E501",     # Line too long, handled by ruff format
+    "TC002",    # Type-checking on 3rd party packages.
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = [
+    "S101",     # "Use of `assert` detected"
+    "ARG",      # "Unused function argument". Fixtures are often unused.
+    "S105",     # "Possible hardcoded password".
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pep8-naming]
+classmethod-decorators = [
+    "classmethod",
+    "pydantic.validator",
+    "pydantic.root_validator",
+]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-unused-arguments]
+ignore-variadic-names = true
+
+[tool.pytest.ini_options]
+addopts = """\
+    --cov leela_interp \
+    --cov tests \
+    --cov-report term-missing \
+    --no-cov-on-fail \
+"""
+
+[tool.coverage.report]
+fail_under = 100
+exclude_lines = [
+    'if TYPE_CHECKING:',
+    'pragma: no cover'
+]
+
+[tool.mypy]
+# This is the global mypy configuration.
+# Avoid changing this!
+strict = true  # See all the enabled flags `mypy --help | grep -A 10 'Strict mode'`
+disallow_any_unimported = false
+exclude = [
+    "notebooks",
+]
+
+# If you need to ignore something for some specific module,
+# add overrides for them. Avoid changing the global config!
+# For example:
+[[tool.mypy.overrides]]
+module = [
+    "sklearn.*",
+]
+ignore_missing_imports = true
+
+# [[tool.mypy.overrides]]
+# module = [
+#   "tests/my_thing/test_my_thing",
+# ]
+# disallow_untyped_defs = false
