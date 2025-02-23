@@ -57,13 +57,13 @@ def main(args):
         protected_idx = board.sq2idx(protected_square)
 
         third_source_square = puzzle.principal_variation[2][0:2]
-        piece_type = board.pc_board.piece_type_at(
+        piece_type = board.piece_type_at(
             board.idx2chess_sq(board.sq2idx(third_source_square))
         )
-        piece_color = board.pc_board.color_at(
+        piece_color = board.color_at(
             board.idx2chess_sq(board.sq2idx(third_source_square))
         )
-        if piece_color != board.pc_board.turn:
+        if piece_color != board.turn:
             mask.append(False)
             continue
 

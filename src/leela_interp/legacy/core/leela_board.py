@@ -172,6 +172,26 @@ class LeelaBoard:
     def result(self, *, claim_draw: bool = False) -> str:
         return self.pc_board.result(claim_draw=claim_draw)
 
+    def piece_at(self, square: chess.Square) -> chess.Piece | None:
+        return self.pc_board.piece_at(square)
+
+    def piece_type_at(self, square: chess.Square) -> chess.PieceType | None:
+        return self.pc_board.piece_type_at(square)
+
+    def color_at(self, square: chess.Square) -> chess.Color | None:
+        return self.pc_board.color_at(square)
+
+    def san(self, move: chess.Move) -> str:
+        return self.pc_board.san(move)
+
+    def parse_san(self, san: str) -> chess.Move:
+        return self.pc_board.parse_san(san)
+
+    def pieces_mask(
+        self, piece_type: chess.PieceType, color: chess.Color
+    ) -> chess.Bitboard:
+        return self.pc_board.pieces_mask(piece_type, color)
+
     def _transposition_key(self) -> TranspositionKey:
         return TranspositionKey(*self.pc_board._transposition_key())
 
@@ -260,7 +280,7 @@ class LeelaBoard:
         self.push(move)
 
     def push_san(self, san):
-        move = self.pc_board.parse_san(san)
+        move = self.parse_san(san)
         self.push(move)
 
     def pop(self):
@@ -272,10 +292,9 @@ class LeelaBoard:
     def _plane_bytes_iter(self):
         """Get plane bytes... used for _lcz_push"""
         pack = self._plane_bytes_struct.pack
-        pieces_mask = self.pc_board.pieces_mask
         for color in (True, False):
             for piece_type in range(1, 7):
-                byts = pack(pieces_mask(piece_type, color))
+                byts = pack(self.pieces_mask(piece_type, color))
                 yield byts
 
     def _lcz_push(self):
@@ -421,6 +440,6 @@ class LeelaBoard:
             *transposition_key,
             self._lcz_transposition_counter[transposition_key],
             self.halfmove_clock,
-            *self.pc_board.move_stack[-7:],
+            *self.move_stack[-7:],
         )
         return hash(key)
