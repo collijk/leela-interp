@@ -2,8 +2,7 @@ import matplotlib as mpl
 import numpy as np
 import torch
 
-from leela_interp import LeelaBoard
-from leela_interp.legacy.core.iceberg_board import palette
+from leela_interp import LeelaBoard, palette
 
 TORCH_INDEX = int | slice | list[int] | torch.Tensor | np.ndarray
 

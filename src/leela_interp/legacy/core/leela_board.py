@@ -19,7 +19,7 @@ from chess import Move
 from matplotlib.cm import ScalarMappable
 
 from leela_interp.legacy.core.iceberg_board import IcebergBoard
-from leela_interp.lib.boards.indexing import (
+from leela_interp.lib.board.indexing import (
     idx_to_uci as _idx_to_uci,
     uci_to_idx as _uci_to_idx,
 )
