@@ -1,9 +1,9 @@
 import click
 import pandas as pd
 
-from leela_interp import cli_options as clio
+from leela_interp import shell_tools
 from leela_interp.data import LeelaData
-from leela_interp.shell_tools import touch, wget
+from leela_interp.pipelines import cli_options as clio
 
 FIGSHARE_URL_TEMPLATE = (
     "https://figshare.com/ndownloader/files/{file_id}?private_link=adc80845c00b67c8fce5"
@@ -26,19 +26,19 @@ def extract_figshare_main(data_root: str) -> None:
         url = FIGSHARE_URL_TEMPLATE.format(file_id=file_id)
         if subdir == "puzzles":
             temp_path = li_data.root / "temp.pkl"
-            touch(temp_path, clobber=True)
-            wget(url, temp_path)
+            shell_tools.touch(temp_path, clobber=True)
+            shell_tools.wget(url, temp_path)
             puzzle_df = pd.read_pickle(temp_path)
 
             path = li_data.puzzles_path(name)
-            touch(path, clobber=True)
+            shell_tools.touch(path, clobber=True)
             puzzle_df.to_parquet(path)
             temp_path.unlink()
         elif subdir == "models":
             path = li_data.model_path(name)
-            touch(path, clobber=True)
+            shell_tools.touch(path, clobber=True)
             print(f"Downloading {name} to {path}")
-            wget(url, path)
+            shell_tools.wget(url, path)
         else:
             msg = f"Unknown subdir: {subdir}"
             raise ValueError(msg)

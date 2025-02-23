@@ -8,3 +8,16 @@ from leela_interp.legacy.core.nnsight import Lc0sight
 from leela_interp.legacy.tools import patching
 from leela_interp.legacy.tools.activations import ActivationCache
 from leela_interp.legacy.tools.play import get_lc0_pv_probabilities
+from leela_interp.lib import shell_tools
+
+__all__ = [
+    "ActivationCache",
+    "IcebergBoard",
+    "Lc0Model",
+    "Lc0sight",
+    "LeelaBoard",
+    "get_lc0_pv_probabilities",
+    "palette",
+    "patching",
+    "shell_tools",
+]

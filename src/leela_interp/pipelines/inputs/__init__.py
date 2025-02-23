@@ -1,7 +1,7 @@
-from leela_interp.inputs.extract_figshare import (
+from leela_interp.pipelines.inputs.extract_figshare import (
     extract_figshare,
 )
-from leela_interp.inputs.extract_lichess import (
+from leela_interp.pipelines.inputs.extract_lichess import (
     extract_lichess,
 )
 

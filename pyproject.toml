@@ -54,7 +54,7 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-lirun = "leela_interp.cli:lirun"
+lirun = "leela_interp.pipelines.cli:lirun"
 
 [tool.ruff]
 target-version = "py310" # The lowest supported version

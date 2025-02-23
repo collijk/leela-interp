@@ -1,6 +1,6 @@
 import click
 
-from leela_interp import inputs
+from leela_interp.pipelines import inputs
 
 
 @click.group()

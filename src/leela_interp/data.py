@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 from leela_interp import constants as lic
-from leela_interp.shell_tools import mkdir
+from leela_interp import shell_tools
 
 
 class LeelaData:
@@ -12,9 +12,9 @@ class LeelaData:
         self._create_data_root()
 
     def _create_data_root(self) -> None:
-        mkdir(self.root, exist_ok=True)
-        mkdir(self.puzzles, exist_ok=True)
-        mkdir(self.models, exist_ok=True)
+        shell_tools.mkdir(self.root, exist_ok=True)
+        shell_tools.mkdir(self.puzzles, exist_ok=True)
+        shell_tools.mkdir(self.models, exist_ok=True)
 
     @property
     def root(self) -> Path:
