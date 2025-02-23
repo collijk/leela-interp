@@ -181,7 +181,7 @@ class LeelaBoard:
         return leela_board
 
     @classmethod
-    def from_puzzle(cls, puzzle: pd.Series, fast: bool = True):
+    def from_puzzle(cls, puzzle: pd.Series):
         """Load a board from the Lichess puzzle pandas DataFrame.
 
         Note that the FEN field in the puzzle DataFrame is the position one ply before
@@ -189,33 +189,8 @@ class LeelaBoard:
         use this method instead!
         """
         fen = puzzle["FEN"]
-
-        if fast:
-            # Don't play through the whole game, just play the first move to get the
-            # actual puzzle position. This is significantly faster, but Lc0 won't have
-            # access to the full move history.
-            # (Anecdotally, this doesn't cause problems.)
-            return LeelaBoard.from_fen(fen, puzzle["Moves"].split(" ")[:1], uci=True)
-
-        fen_board = chess.Board(fen)
-
-        game = chess.pgn.read_game(io.StringIO(puzzle["PGN"]))
-        moves = list(game.mainline_moves())
-        uci_moves = [move.uci() for move in moves]
-        leela_board = cls()
-        moves_so_far = []
-        for move in uci_moves:
-            if leela_board.pc_board == fen_board:
-                break
-            leela_board.push_uci(move)
-            moves_so_far.append(move)
-
-        next_moves = puzzle["Moves"].split(" ")
-
-        moves_so_far.append(next_moves[0])
-        leela_board.push_uci(next_moves[0])
-
-        return leela_board
+        first_move = puzzle["Moves"].split(" ")[0]
+        return cls.from_fen(fen, [first_move], uci=True)
 
     def copy(self, history=7):
         """Note! Currently the copy constructor uses pc_board.copy(stack=False), which
