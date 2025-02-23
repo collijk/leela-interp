@@ -454,7 +454,7 @@ class LeelaBoard:
         return [uci_idx_dct[m] for m in uci_list]
 
     def __repr__(self):
-        return "LeelaBoard('{}')".format(self.pc_board.fen())
+        return f"LeelaBoard('{self.pc_board.fen()}')"
 
     def _repr_svg_(self):
         return chess.svg.board(
@@ -475,7 +475,7 @@ class LeelaBoard:
     def __str__(self):
         if self.pc_board.is_game_over() or self.is_draw():
             result = self.pc_board.result(claim_draw=True)
-            turnstring = "Result: {}".format(result)
+            turnstring = f"Result: {result}"
         else:
             turnstring = "Turn: {}".format("White" if self.pc_board.turn else "Black")
         boardstr = self.pc_board.__str__() + "\n" + turnstring

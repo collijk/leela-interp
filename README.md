@@ -77,7 +77,7 @@ If you find this codebase helpful for your research, please cite our paper:
 
 ```
 @misc{jenner2024evidence,
-      title={Evidence of Learned Look-Ahead in a Chess-Playing Neural Network}, 
+      title={Evidence of Learned Look-Ahead in a Chess-Playing Neural Network},
       author={Erik Jenner and Shreyas Kapur and Vasil Georgiev and Cameron Allen and Scott Emmons and Stuart Russell},
       year={2024},
       eprint={2406.00877},

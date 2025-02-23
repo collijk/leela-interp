@@ -1894,7 +1894,7 @@ for move in _idx_to_move_wn:
     c0, r0, c1, r1, p = move[0], int(move[1]), move[2], int(move[3]), move[4:]
     r0 = 9 - r0
     r1 = 9 - r1
-    _idx_to_move_bn.append("{}{}{}{}{}".format(c0, r0, c1, r1, p))
+    _idx_to_move_bn.append(f"{c0}{r0}{c1}{r1}{p}")
 _uci_to_idx_bn = dict((uci, idx) for idx, uci in enumerate(_idx_to_move_bn))
 
 # Black, castling

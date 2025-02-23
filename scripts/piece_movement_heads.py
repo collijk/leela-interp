@@ -105,6 +105,7 @@ def main(args):
             for cases, heads in zip(
                 all_cases,
                 [bishop_heads, knight_heads, rook_heads],
+                strict=False,
             ):
                 for layer in range(15):
                     # True for entries we will zero-ablate

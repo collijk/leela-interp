@@ -7,4 +7,3 @@
 ## lc0-original
 
 ## lc0-random
-

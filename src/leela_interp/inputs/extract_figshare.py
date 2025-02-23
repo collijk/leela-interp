@@ -1,14 +1,16 @@
 import click
 import pandas as pd
 
-from leela_interp.data import LeelaData
-from leela_interp.shell_tools import wget, touch
 from leela_interp import cli_options as clio
+from leela_interp.data import LeelaData
+from leela_interp.shell_tools import touch, wget
+
+FIGSHARE_URL_TEMPLATE = (
+    "https://figshare.com/ndownloader/files/{file_id}?private_link=adc80845c00b67c8fce5"
+)
 
 
-FIGSHARE_URL_TEMPLATE = "https://figshare.com/ndownloader/files/{file_id}?private_link=adc80845c00b67c8fce5"
-
-def extract_figshare_main(data_root: str):
+def extract_figshare_main(data_root: str) -> None:
     li_data = LeelaData(data_root)
 
     file_map = {
@@ -42,9 +44,7 @@ def extract_figshare_main(data_root: str):
             raise ValueError(msg)
 
 
-
-
 @click.command()
 @clio.with_data_root()
-def extract_figshare(data_root: str):
+def extract_figshare(data_root: str) -> None:
     extract_figshare_main(data_root)

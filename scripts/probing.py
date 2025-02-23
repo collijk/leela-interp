@@ -72,7 +72,7 @@ def collect_data(
         boards = activations.boards[n_train:]
         puzzles = puzzles.iloc[n_train:]
 
-    for board, (_, puzzle) in zip(boards, puzzles.iterrows()):
+    for board, (_, puzzle) in zip(boards, puzzles.iterrows(), strict=False):
         # Important check to make sure we're not accidentally using activations
         # from different puzzles:
         assert board.fen() == LeelaBoard.from_puzzle(puzzle).fen()
@@ -154,7 +154,7 @@ def eval_probes(target_probes, source_probes, puzzles, activations, n_train, pat
     target_accuracies = []
 
     for layer, target_probe, source_probe in zip(
-        tqdm.trange(15), target_probes, source_probes
+        tqdm.trange(15), target_probes, source_probes, strict=False
     ):
         name = f"encoder{layer}/ln2"
         source_accuracy, target_accuracy, accuracy = eval_probe(

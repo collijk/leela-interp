@@ -1,18 +1,14 @@
 from collections.abc import Callable
 from pathlib import Path
-from typing import ParamSpec, TypeVar
 
 import click
 
 from leela_interp import constants as lic
 
-_T = TypeVar("_T")
-_P = ParamSpec("_P")
-_EntryPoint = Callable[_P, _T]
-ClickOption = Callable[[_EntryPoint[_P, _T]], _EntryPoint[_P, _T]]
 
-
-def with_data_root(default: str | Path = lic.DATA_ROOT) -> ClickOption[_P, _T]:
+def with_data_root[**P, T](
+    default: str | Path = lic.DATA_ROOT,
+) -> Callable[[Callable[P, T]], Callable[P, T]]:
     return click.option(
         "--data-root",
         "-o",

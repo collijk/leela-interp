@@ -297,7 +297,8 @@ class Lc0Model(torch.nn.Module):
         assert policy.shape == (self.POLICY_OUTPUT_SIZE,)
         legal_indices, legal_uci = self.legal_moves(board)
         return {
-            uci: policy[index].item() for index, uci in zip(legal_indices, legal_uci)
+            uci: policy[index].item()
+            for index, uci in zip(legal_indices, legal_uci, strict=False)
         }
 
     def top_moves(

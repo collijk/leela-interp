@@ -1,5 +1,6 @@
 # ruff: noqa: F401
 """Utilities to neatly interface with Leela Chess Zero's policy networks."""
+
 from leela_interp.legacy.core.iceberg_board import IcebergBoard, palette
 from leela_interp.legacy.core.lc0 import Lc0Model
 from leela_interp.legacy.core.leela_board import LeelaBoard

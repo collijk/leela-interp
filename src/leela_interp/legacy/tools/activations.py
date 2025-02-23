@@ -1,8 +1,8 @@
 import pickle
 import shutil
 import warnings
-from pathlib import Path
 from collections.abc import Iterable
+from pathlib import Path
 
 import numpy as np
 import tqdm
@@ -15,9 +15,7 @@ from leela_interp.legacy.core.nnsight import Lc0sight
 
 
 class ActivationCache:
-    def __init__(
-        self, data, boards: list[LeelaBoard] | None = None
-    ):
+    def __init__(self, data, boards: list[LeelaBoard] | None = None):
         self.data = data
         if boards is not None:
             assert len(boards) == data.attrs["n_samples"]
@@ -72,8 +70,7 @@ class ActivationCache:
             if Path(path).exists():
                 if not overwrite:
                     raise FileExistsError(f"File {path} already exists")
-                else:
-                    shutil.rmtree(path)
+                shutil.rmtree(path)
             store = zarr.DirectoryStore(str(path))
 
         data = zarr.group(store=store)

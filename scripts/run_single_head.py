@@ -44,10 +44,16 @@ def third_to_first_vs_other_ablations(model, boards, puzzles, args):
     first_target_squares = puzzles.principal_variation.apply(lambda x: x[0][2:4])
     third_target_squares = puzzles.principal_variation.apply(lambda x: x[2][2:4])
     first_target_indices = torch.tensor(
-        [board.sq2idx(sq) for board, sq in zip(boards, first_target_squares)]
+        [
+            board.sq2idx(sq)
+            for board, sq in zip(boards, first_target_squares, strict=False)
+        ]
     )
     third_target_indices = torch.tensor(
-        [board.sq2idx(sq) for board, sq in zip(boards, third_target_squares)]
+        [
+            board.sq2idx(sq)
+            for board, sq in zip(boards, third_target_squares, strict=False)
+        ]
     )
 
     def _third_to_first_ablate(location, model, batch_indices):

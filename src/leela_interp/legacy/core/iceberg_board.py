@@ -35,9 +35,7 @@ def palette(
         total_range = diff / upper_ratio
         norm = Normalize(vmin=vmin, vmax=vmin + total_range)
     mappable = ScalarMappable(norm=norm, cmap=cmap)
-    return [
-        mpl.colors.to_hex(mappable.to_rgba(value)) for value in values
-    ], mappable
+    return [mpl.colors.to_hex(mappable.to_rgba(value)) for value in values], mappable
 
 
 CHESS_NAME_TO_SQUARE = {chess.square_name(i): chess.Square(i) for i in range(64)}

@@ -63,12 +63,12 @@ def top_k_attributions(
         _, color_mappable = palette(
             attributions.cpu().numpy().ravel(), cmap="bwr", zero_center=True
         )
-    for i, (query, key) in enumerate(zip(query_squares, key_squares)):
+    for i, (query, key) in enumerate(zip(query_squares, key_squares, strict=False)):
         value = attributions.view(-1)[indices[i]].item()
         values[f"{key}{query}"] = value
         rgba_color = color_mappable.to_rgba(value, alpha=0.8)
         colors[f"{key}{query}"] = (
-            mpl.colors.rgb2hex(rgba_color[:3]) + f"{int(rgba_color[3]*255):02x}"
+            mpl.colors.rgb2hex(rgba_color[:3]) + f"{int(rgba_color[3] * 255):02x}"
         )
 
     return values, colors

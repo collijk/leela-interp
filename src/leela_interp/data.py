@@ -1,24 +1,23 @@
-import pickle
 from pathlib import Path
 
 import pandas as pd
-from leela_interp.shell_tools import mkdir
+
 from leela_interp import constants as lic
+from leela_interp.shell_tools import mkdir
 
 
 class LeelaData:
-
     def __init__(self, root: str | Path = lic.DATA_ROOT):
         self._root = Path(root)
         self._create_data_root()
 
-    def _create_data_root(self):
+    def _create_data_root(self) -> None:
         mkdir(self.root, exist_ok=True)
         mkdir(self.puzzles, exist_ok=True)
         mkdir(self.models, exist_ok=True)
 
     @property
-    def root(self) -> str:
+    def root(self) -> Path:
         return self._root
 
     @property
@@ -38,4 +37,3 @@ class LeelaData:
 
     def model_path(self, model_name: str) -> Path:
         return self.models / f"{model_name}.onnx"
-

@@ -1,4 +1,3 @@
-
 import click
 import pandas as pd
 import zstandard as zstd
@@ -9,7 +8,8 @@ from leela_interp.shell_tools import touch, wget
 
 URL = "https://database.lichess.org/lichess_db_puzzle.csv.zst"
 
-def extract_lichess_main(data_root: str):
+
+def extract_lichess_main(data_root: str) -> None:
     li_data = LeelaData(data_root)
     dl_path = li_data.root / "lichess_db_puzzle.csv.zst"
     csv_path = li_data.root / "lichess_db_puzzle.csv"
@@ -34,5 +34,5 @@ def extract_lichess_main(data_root: str):
 
 @click.command()
 @clio.with_data_root()
-def extract_lichess(data_root: str):
+def extract_lichess(data_root: str) -> None:
     extract_lichess_main(data_root)

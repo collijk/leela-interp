@@ -520,7 +520,7 @@ class PolicyBar(ice.DrawableWithChild):
             # Add arrows pointing to the new values.
             with bars_arranged:
                 for i, (number_before, number_after) in enumerate(
-                    zip(self.numbers, self.numbers_changed)
+                    zip(self.numbers, self.numbers_changed, strict=False)
                 ):
                     if abs(number_before - number_after) < 5e-2:
                         continue
