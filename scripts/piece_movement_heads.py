@@ -4,6 +4,7 @@ from pathlib import Path
 
 import chess
 import torch
+
 from leela_interp import (
     Lc0sight,
     LeelaBoard,

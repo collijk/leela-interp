@@ -6,6 +6,7 @@ import chess
 import pandas as pd
 import torch
 import tqdm
+
 from leela_interp import Lc0Model, LeelaBoard
 
 
