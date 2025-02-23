@@ -1874,10 +1874,10 @@ _idx_to_move_wn = [
 ]
 
 # White, no castling
-_uci_to_idx_wn = dict((uci, idx) for idx, uci in enumerate(_idx_to_move_wn))
+_uci_to_idx_wn = {uci: idx for idx, uci in enumerate(_idx_to_move_wn)}
 
 # White, castling
-_uci_to_idx_wc = dict((uci, idx) for idx, uci in enumerate(_idx_to_move_wn))
+_uci_to_idx_wc = {uci: idx for idx, uci in enumerate(_idx_to_move_wn)}
 _uci_to_idx_wc["e1g1"], _uci_to_idx_wc["e1h1"] = (
     _uci_to_idx_wc["e1h1"],
     _uci_to_idx_wc["e1g1"],
@@ -1895,10 +1895,10 @@ for move in _idx_to_move_wn:
     r0 = 9 - r0
     r1 = 9 - r1
     _idx_to_move_bn.append(f"{c0}{r0}{c1}{r1}{p}")
-_uci_to_idx_bn = dict((uci, idx) for idx, uci in enumerate(_idx_to_move_bn))
+_uci_to_idx_bn = {uci: idx for idx, uci in enumerate(_idx_to_move_bn)}
 
 # Black, castling
-_uci_to_idx_bc = dict((uci, idx) for idx, uci in enumerate(_idx_to_move_bn))
+_uci_to_idx_bc = {uci: idx for idx, uci in enumerate(_idx_to_move_bn)}
 _uci_to_idx_bc["e8g8"], _uci_to_idx_bc["e8h8"] = (
     _uci_to_idx_bc["e8h8"],
     _uci_to_idx_bc["e8g8"],

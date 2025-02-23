@@ -19,8 +19,10 @@ from chess import Move
 from matplotlib.cm import ScalarMappable
 
 from leela_interp.legacy.core.iceberg_board import IcebergBoard
-from leela_interp.legacy.core.uci_to_idx import idx_to_uci as _idx_to_uci
-from leela_interp.legacy.core.uci_to_idx import uci_to_idx as _uci_to_idx
+from leela_interp.lib.boards.indexing import (
+    idx_to_uci as _idx_to_uci,
+    uci_to_idx as _uci_to_idx,
+)
 from leela_interp.legacy.core.utils import idx2sq, sq2idx
 
 flat_planes = []
