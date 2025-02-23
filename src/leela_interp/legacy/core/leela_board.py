@@ -57,13 +57,6 @@ class LeelaBoard:
         return board
 
     @classmethod
-    def from_pgn(cls, pgn: str):
-        """Create a LeelaBoard from a PGN string"""
-        game = chess.pgn.read_game(io.StringIO(pgn))
-        uci_moves = [move.uci() for move in game.mainline_moves()]
-        return cls.from_uci(uci_moves)
-
-    @classmethod
     def from_fen(
         cls,
         fen: str,
