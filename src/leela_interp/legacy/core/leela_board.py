@@ -247,8 +247,9 @@ class LeelaBoard:
         """
         cls = type(self)
         copied = cls.__new__(cls)
+        move_stack = self.move_stack[-history:]
         copied.pc_board = self.pc_board.copy(stack=False)
-        copied.pc_board.move_stack[:] = self.move_stack[-history:]
+        copied.pc_board.move_stack[:] = move_stack
         copied.lcz_stack = self.lcz_stack[-history:]
         copied._lcz_transposition_counter = self._lcz_transposition_counter.copy()
         return copied
