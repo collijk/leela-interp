@@ -88,6 +88,7 @@ ignore = [
     "RET505",   # Else after return, too many false positives.
     "E501",     # Line too long, handled by ruff format
     "TC002",    # Type-checking on 3rd party packages.
+    "TC003",    # Type-checking blocks are silly unless there are cyclic imports
     "S301",     # We use pickle files.
 ]
 

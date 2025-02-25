@@ -1,8 +1,7 @@
 import torch
-from nnsight import NNsight
-
 from leela_interp.legacy.core.lc0 import Lc0Model
 from leela_interp.legacy.core.leela_board import LeelaBoard
+from nnsight import NNsight
 
 
 class Lc0sight(NNsight):

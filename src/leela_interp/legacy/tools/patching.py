@@ -1,12 +1,10 @@
 import itertools
-from collections.abc import Callable
-from typing import Literal
+from typing import Callable, Literal, Optional
 
 import pandas as pd
 import torch
 import tqdm
 from einops import rearrange
-
 from leela_interp.legacy.core.leela_board import LeelaBoard
 from leela_interp.legacy.core.nnsight import Lc0sight
 
@@ -15,7 +13,7 @@ def get_move_probs(
     move_indices: torch.Tensor,
     model: Lc0sight,
     boards: list[LeelaBoard],
-    legal_move_mask: torch.Tensor | None = None,
+    legal_move_mask: Optional[torch.Tensor] = None,
 ):
     logits = model.output[0]
     probs = model.logits_to_probs(boards, logits, legal_move_mask=legal_move_mask)
@@ -27,7 +25,7 @@ def get_move_log_odds(
     move_indices: torch.Tensor,
     model: Lc0sight,
     boards: list[LeelaBoard],
-    legal_move_mask: torch.Tensor | None = None,
+    legal_move_mask: Optional[torch.Tensor] = None,
 ):
     move_probs = get_move_probs(
         move_indices, model, boards, legal_move_mask=legal_move_mask
@@ -56,10 +54,10 @@ def patch(
     patching_func: Callable,
     locations: list,
     boards: list[LeelaBoard] | LeelaBoard,
-    model: Lc0sight | None = None,
+    model: Optional[Lc0sight] = None,
     effect_type: EffectType = "move_log_odds",
     output_func: Callable[
-        [torch.Tensor, Lc0sight, list[LeelaBoard], torch.Tensor | None], torch.Tensor
+        [torch.Tensor, Lc0sight, list[LeelaBoard], Optional[torch.Tensor]], torch.Tensor
     ]
     | None = None,
     location_batch_size: int = 1,
@@ -226,9 +224,9 @@ def activation_patch(
     module_func: Callable[[int], torch.nn.Module],
     locations: list[tuple[int, ...]],
     model: Lc0sight,
-    puzzles: pd.DataFrame | pd.Series | None = None,
-    boards: list[LeelaBoard] | LeelaBoard | None = None,
-    corrupted_boards: list[LeelaBoard] | LeelaBoard | None = None,
+    puzzles: Optional[pd.DataFrame | pd.Series] = None,
+    boards: Optional[list[LeelaBoard] | LeelaBoard] = None,
+    corrupted_boards: Optional[list[LeelaBoard] | LeelaBoard] = None,
     effect_type: EffectType = "move_log_odds",
     output_func: Callable[[torch.Tensor, Lc0sight, list[LeelaBoard]], torch.Tensor]
     | None = None,
@@ -328,14 +326,14 @@ def _activation_patch_single_board_batch(
 
 def residual_stream_activation_patch(
     model: Lc0sight,
-    puzzles: pd.DataFrame | pd.Series | None = None,
-    boards: list[LeelaBoard] | LeelaBoard | None = None,
-    corrupted_boards: list[LeelaBoard] | LeelaBoard | None = None,
+    puzzles: Optional[pd.DataFrame | pd.Series] = None,
+    boards: Optional[list[LeelaBoard] | LeelaBoard] = None,
+    corrupted_boards: Optional[list[LeelaBoard] | LeelaBoard] = None,
     effect_type: EffectType = "move_log_odds",
     output_func: Callable[[torch.Tensor, Lc0sight, list[LeelaBoard]], torch.Tensor]
     | None = None,
-    layers: list[int] | None = None,
-    squares: list[int] | None = None,
+    layers: Optional[list[int]] = None,
+    squares: Optional[list[int]] = None,
     batch_size: int = 64,
     location_batch_size: int = 1,
     module_func: Callable[[int], torch.nn.Module] | None = None,

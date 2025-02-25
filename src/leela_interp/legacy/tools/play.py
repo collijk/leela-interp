@@ -7,8 +7,8 @@ don't have batch support yet.
 import pandas as pd
 import torch
 import tqdm
-
-from leela_interp import Lc0Model, LeelaBoard
+from leela_interp.legacy.core.lc0 import Lc0Model
+from leela_interp.legacy.core.leela_board import LeelaBoard
 
 
 def get_lc0_pv_probabilities(

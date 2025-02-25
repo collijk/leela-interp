@@ -1,7 +1,7 @@
 _LETTERS = {letter: i for i, letter in enumerate("abcdefgh")}
 
 
-def sq2idx(sq: str, turn: bool):
+def sq2idx(sq: str, turn: bool) -> int:
     file, row = sq
     file = _LETTERS[file]
     if not turn:
@@ -18,5 +18,5 @@ _IDX2SQ = {
 }
 
 
-def idx2sq(idx: int, turn: bool):
+def idx2sq(idx: int, turn: bool) -> str:
     return _IDX2SQ[turn][idx]

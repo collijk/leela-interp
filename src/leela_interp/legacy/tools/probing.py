@@ -1,7 +1,7 @@
 import functools
 import warnings
-from collections.abc import Callable
 from dataclasses import dataclass
+from typing import Callable
 
 import numpy as np
 import pandas as pd
@@ -12,7 +12,8 @@ from sklearn import preprocessing
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 
-from leela_interp import ActivationCache, LeelaBoard
+from leela_interp.legacy.core.leela_board import LeelaBoard
+from leela_interp.legacy.tools.activations import ActivationCache
 
 
 @dataclass

@@ -1,27 +1,28 @@
 import pickle
 import shutil
 import warnings
-from collections.abc import Iterable
 from pathlib import Path
+from typing import Iterable
 
 import numpy as np
 import tqdm
 import zarr
 from einops import rearrange
-
 from leela_interp.legacy.core.lc0 import Lc0Model
 from leela_interp.legacy.core.leela_board import LeelaBoard
 from leela_interp.legacy.core.nnsight import Lc0sight
 
 
 class ActivationCache:
-    def __init__(self, data, boards: list[LeelaBoard] | None = None):
+    def __init__(
+        self, data: zarr.hierarchy.Group, boards: list[LeelaBoard] | None = None
+    ):
         self.data = data
         if boards is not None:
             assert len(boards) == data.attrs["n_samples"]
         self.boards = boards
 
-    def __getitem__(self, name: str):
+    def __getitem__(self, name: str) -> zarr.core.Array:
         return self.data[name]
 
     def numpy(self, name: str) -> np.ndarray:
@@ -70,7 +71,8 @@ class ActivationCache:
             if Path(path).exists():
                 if not overwrite:
                     raise FileExistsError(f"File {path} already exists")
-                shutil.rmtree(path)
+                else:
+                    shutil.rmtree(path)
             store = zarr.DirectoryStore(str(path))
 
         data = zarr.group(store=store)

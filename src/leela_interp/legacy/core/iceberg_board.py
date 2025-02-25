@@ -8,7 +8,7 @@ on your system.
 import chess
 import chess.svg
 import iceberg as ice
-import matplotlib as mpl
+import matplotlib
 import numpy as np
 import torch
 from matplotlib.cm import ScalarMappable
@@ -35,7 +35,9 @@ def palette(
         total_range = diff / upper_ratio
         norm = Normalize(vmin=vmin, vmax=vmin + total_range)
     mappable = ScalarMappable(norm=norm, cmap=cmap)
-    return [mpl.colors.to_hex(mappable.to_rgba(value)) for value in values], mappable
+    return [
+        matplotlib.colors.to_hex(mappable.to_rgba(value)) for value in values
+    ], mappable
 
 
 CHESS_NAME_TO_SQUARE = {chess.square_name(i): chess.Square(i) for i in range(64)}
@@ -71,7 +73,7 @@ class IcebergBoard(ice.DrawableWithChild):
                     )
                 else:
                     colormap_values = [
-                        mpl.colors.to_hex(self.mappable.to_rgba(value))
+                        matplotlib.colors.to_hex(self.mappable.to_rgba(value))
                         for value in self.heatmap.values()
                     ]
                 self.heatmap = {
@@ -91,7 +93,7 @@ class IcebergBoard(ice.DrawableWithChild):
                     )
                 else:
                     colormap_values = [
-                        mpl.colors.to_hex(self.mappable.to_rgba(value))
+                        matplotlib.colors.to_hex(self.mappable.to_rgba(value))
                         for value in self.heatmap
                     ]
             else:
