@@ -49,9 +49,6 @@ class LeelaBoard:
         self.lcz_stack = []
         self._lcz_transposition_counter = collections.Counter()
         self._lcz_push()
-        self.is_game_over = self.pc_method("is_game_over")
-        self.can_claim_draw = self.pc_method("can_claim_draw")
-        self.generate_legal_moves = self.pc_method("generate_legal_moves")
 
     @classmethod
     def from_uci(cls, uci_moves: list[str]):
