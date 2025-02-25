@@ -200,7 +200,7 @@ class Lc0Model(torch.nn.Module):
     def make_inputs(self, boards: list[LeelaBoard]) -> torch.Tensor:
         if self._is_sparring and not self._sparring_use_history:
             boards = [
-                LeelaBoard.from_fen(board.pc_board.fen(), history_synthesis="repeat")
+                LeelaBoard.from_fen(board.fen(), history_synthesis="repeat")
                 for board in boards
             ]
 
@@ -281,7 +281,7 @@ class Lc0Model(torch.nn.Module):
         policy, wdl, _ = self.play(board, return_probs=True)
         print(
             "\n".join(
-                f"{board.pc_board.san(chess.Move.from_uci(move))}: {prob:.2%}"
+                f"{board.san(chess.Move.from_uci(move))}: {prob:.2%}"
                 for move, prob in self.top_moves(board, policy, top_k=top_k).items()
             )
         )

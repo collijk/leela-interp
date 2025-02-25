@@ -6,6 +6,7 @@ Based on https://github.com/so-much-meta/lczero_tools/blob/master/src/lcztools/_
 """
 
 import collections
+from collections.abc import Iterator
 import io
 import struct
 
@@ -35,19 +36,12 @@ LeelaBoardData = collections.namedtuple(
 )
 
 
-def pc_board_property(propertyname):
-    """Create a property based on self.pc_board"""
-
-    def prop(self):
-        return getattr(self.pc_board, propertyname)
-
-    return property(prop)
-
-
 class LeelaBoard:
-    turn = pc_board_property("turn")
-    move_stack = pc_board_property("move_stack")
     _plane_bytes_struct = struct.Struct(">Q")
+
+    ################
+    # Constructors #
+    ################
 
     def __init__(self):
         """If leela_board is passed as an argument, return a copy"""
@@ -58,58 +52,6 @@ class LeelaBoard:
         self.is_game_over = self.pc_method("is_game_over")
         self.can_claim_draw = self.pc_method("can_claim_draw")
         self.generate_legal_moves = self.pc_method("generate_legal_moves")
-
-    def fen(self) -> str:
-        return self.pc_board.fen()
-
-    def sq2idx(self, square: str) -> int:
-        return sq2idx(square, self.turn)
-
-    def idx2sq(self, idx: int) -> str:
-        return idx2sq(idx, self.turn)
-
-    def chess_sq2idx(self, square: chess.Square) -> int:
-        return self.sq2idx(chess.square_name(square))
-
-    def idx2chess_sq(self, idx: int) -> chess.Square:
-        return chess.parse_square(self.idx2sq(idx))
-
-    def uci2idx(self, uci: str) -> int:
-        return self._uci_to_idx_dict()[uci]
-
-    def idx2uci(self, idx: int) -> str:
-        return self._idx_to_uci_dict()[idx]
-
-    def plot(
-        self,
-        heatmap: torch.Tensor
-        | np.ndarray
-        | list[str]
-        | dict[str, str | float]
-        | None = None,
-        moves: str | list[str] | None = None,
-        highlight: str | None = None,
-        caption: str | None = None,
-        cmap: str = "YlOrRd",
-        mappable: ScalarMappable | None = None,
-        zero_center: bool = False,
-        arrows: dict[str, str] | None = None,
-        attn_map: torch.Tensor | np.ndarray | None = None,
-        show_lastmove: bool = True,
-    ):
-        return IcebergBoard(
-            board=self.pc_board,
-            heatmap=heatmap,
-            next_moves=moves,
-            highlight=highlight,
-            caption=caption,
-            cmap=cmap,
-            mappable=mappable,
-            zero_center=zero_center,
-            arrows=arrows,
-            attn_map=attn_map,
-            show_lastmove=show_lastmove,
-        )
 
     @classmethod
     def from_uci(cls, uci_moves: list[str]):
@@ -214,6 +156,128 @@ class LeelaBoard:
         leela_board.push_uci(next_moves[0])
 
         return leela_board
+
+    ############################################
+    # Pass-through properties from chess.Board #
+    ############################################
+
+    @property
+    def turn(self) -> chess.Color:
+        return self.pc_board.turn
+
+    @property
+    def move_stack(self) -> list[chess.Move]:
+        return self.pc_board.move_stack
+
+    @property
+    def halfmove_clock(self) -> int:
+        return self.pc_board.halfmove_clock
+
+    @property
+    def castling_rights(self) -> chess.Bitboard:
+        return self.pc_board.castling_rights
+
+    #########################################
+    # Pass-through methods from chess.Board #
+    #########################################
+
+    def fen(self, **kwargs) -> str:
+        return self.pc_board.fen(**kwargs)
+
+    def is_check(self) -> bool:
+        return self.pc_board.is_check()
+
+    def is_game_over(self, *, claim_draw: bool = False) -> bool:
+        return self.pc_board.is_game_over(claim_draw=claim_draw)
+
+    def can_claim_draw(self) -> bool:
+        return self.pc_board.can_claim_draw()
+
+    def generate_legal_moves(
+        self,
+        from_mask: chess.Bitboard = chess.BB_ALL,
+        to_mask: chess.Bitboard = chess.BB_ALL,
+    ) -> Iterator[chess.Move]:
+        return self.pc_board.generate_legal_moves(from_mask, to_mask)
+
+    def peek(self) -> chess.Move:
+        return self.pc_board.peek()
+
+    def result(self, *, claim_draw: bool = False) -> str:
+        return self.pc_board.result(claim_draw=claim_draw)
+
+    def piece_at(self, square: chess.Square) -> chess.Piece | None:
+        return self.pc_board.piece_at(square)
+
+    def piece_type_at(self, square: chess.Square) -> chess.PieceType | None:
+        return self.pc_board.piece_type_at(square)
+
+    def color_at(self, square: chess.Square) -> chess.Color | None:
+        return self.pc_board.color_at(square)
+
+    def san(self, move: chess.Move) -> str:
+        return self.pc_board.san(move)
+
+    def parse_san(self, san: str) -> chess.Move:
+        return self.pc_board.parse_san(san)
+
+    def pieces_mask(
+        self, piece_type: chess.PieceType, color: chess.Color
+    ) -> chess.Bitboard:
+        return self.pc_board.pieces_mask(piece_type, color)
+
+    ###############
+    # Unorganized #
+    ###############
+
+    def sq2idx(self, square: str) -> int:
+        return sq2idx(square, self.turn)
+
+    def idx2sq(self, idx: int) -> str:
+        return idx2sq(idx, self.turn)
+
+    def chess_sq2idx(self, square: chess.Square) -> int:
+        return self.sq2idx(chess.square_name(square))
+
+    def idx2chess_sq(self, idx: int) -> chess.Square:
+        return chess.parse_square(self.idx2sq(idx))
+
+    def uci2idx(self, uci: str) -> int:
+        return self._uci_to_idx_dict()[uci]
+
+    def idx2uci(self, idx: int) -> str:
+        return self._idx_to_uci_dict()[idx]
+
+    def plot(
+        self,
+        heatmap: torch.Tensor
+        | np.ndarray
+        | list[str]
+        | dict[str, str | float]
+        | None = None,
+        moves: str | list[str] | None = None,
+        highlight: str | None = None,
+        caption: str | None = None,
+        cmap: str = "YlOrRd",
+        mappable: ScalarMappable | None = None,
+        zero_center: bool = False,
+        arrows: dict[str, str] | None = None,
+        attn_map: torch.Tensor | np.ndarray | None = None,
+        show_lastmove: bool = True,
+    ):
+        return IcebergBoard(
+            board=self.pc_board,
+            heatmap=heatmap,
+            next_moves=moves,
+            highlight=highlight,
+            caption=caption,
+            cmap=cmap,
+            mappable=mappable,
+            zero_center=zero_center,
+            arrows=arrows,
+            attn_map=attn_map,
+            show_lastmove=show_lastmove,
+        )
 
     def copy(self, history=7):
         """Note! Currently the copy constructor uses pc_board.copy(stack=False), which
